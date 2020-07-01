@@ -568,12 +568,36 @@ class Solver(object):
                 # list of images (vertically)
                 num_imgs = list(x_real.size())[0] # will always be 16 I think
                 img_size =list(x_real.size())[2] # will always be 128 as long as I keep my settings
+                full_im_width = list(x_concat.size())[3] # width of the combined images
+                num_batches = full_im_width/img_size # number of batches (includes real)
                 
                 # save all of the original images---just for testing really
                 for q in range(0,num_imgs):
-                    current_im = x_real[q,:,:,:]
-                    result_path_im = os.path.join(self.result_dir,'real', 'batch{}-img{}-realimages.png'.format(c_org[q]+1,q+1))
-                    save_image(self.denorm(current_im.data.cpu()), result_path_im, nrow=1, padding=0)
+#                    if not os.path.exists(self.result_dir + '/real/'):
+#                        os.mkdir(self.result_dir + '/real/')
+#                    current_im = x_real[q,:,:,:]
+#                    # need a better counter than the q+1, but keeping a tracker for each individual batch might be hard.
+#                    # right now, will be overwritten if there are more than 16 images to batch
+#                    result_path_im = os.path.join(self.result_dir,'real', 'batch{}-img{}-realimages.png'.format(c_org[q]+1,(q+1)+(i*num_imgs)))
+#                    save_image(self.denorm(current_im.data.cpu()), result_path_im, nrow=1, padding=0)
+#
+                # secondary loop for all of the created images
+                    for w in range(0,int(num_batches)):
+                        # will just have the "real" ones be batch zero
+                        subdirname =self.result_dir + '/batch' + str(w)+'/'
+                        if not os.path.exists(subdirname):
+                            os.mkdir(subdirname)
+                
+                        start_dim = (w)*img_size
+                        end_dim = (w+1)*img_size
+                        #  print(end_dim)
+                        current_img_batch = x_concat[q,:,:,start_dim:end_dim] # gets current image w/ left to right-ness
+                        #print(current_img_batch.size())
+                        result_path_unique = os.path.join(subdirname, 'batch{}-img{}-realimages.png'.format(c_org[q]+1,(q+1)+(i*num_imgs)))
+                        save_image(self.denorm(current_img_batch.data.cpu()),result_path_unique,nrow=1,padding=0)
+                                
+                
+                
                 
                 
                 # torch.Size([16, 3, 128, 128])
