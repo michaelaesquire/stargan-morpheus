@@ -537,16 +537,48 @@ class Solver(object):
                 # Prepare input images and target domain labels.
                 x_real = x_real.to(self.device)
                 c_trg_list = self.create_labels(c_org, self.c_dim, self.dataset, self.selected_attrs)
-
+                #print(i)
+                #  print("that was i")
+                #print(c_org) <- original c domain
                 # Translate images.
                 x_fake_list = [x_real]
                 for c_trg in c_trg_list:
+                    p1 =os.path.join(self.result_dir, '{}-images.png'.format(i+1))
+                    #   print(self.G(x_real, c_trg)) ctarget
+                    
+                    #  print(x_real)
+                    # c_trg is tensor w/ boolean 0 1, 1 if converting to that batch
+                    # has height 16 for 16 images
+                    #  print(c_trg)
                     x_fake_list.append(self.G(x_real, c_trg))
 
                 # Save the translated images.
                 x_concat = torch.cat(x_fake_list, dim=3)
+                # print(x_fake_list)
+                #print("aegawegawegawegawegnawehgioaeor")
+                #print(x_concat)
                 result_path = os.path.join(self.result_dir, '{}-images.png'.format(i+1))
+                result_path2 = os.path.join(self.result_dir,'{}-imageseeee.png'.format(i+1))
                 save_image(self.denorm(x_concat.data.cpu()), result_path, nrow=1, padding=0)
+                #print(x_real[1,:,:,:])
+                #print(x_concat.size())
+                
+                # x_concat.size() = torch.Size([16, 3, 128, 1280])
+                # shoot, will maybe need to break this up?
+                # list of images (vertically)
+                num_imgs = list(x_real.size())[0] # will always be 16 I think
+                img_size =list(x_real.size())[2] # will always be 128 as long as I keep my settings
+                
+                # save all of the original images---just for testing really
+                for q in range(0,num_imgs):
+                    current_im = x_real[q,:,:,:]
+                    result_path_im = os.path.join(self.result_dir,'real', 'batch{}-img{}-realimages.png'.format(c_org[q]+1,q+1))
+                    save_image(self.denorm(current_im.data.cpu()), result_path_im, nrow=1, padding=0)
+                
+                
+                # torch.Size([16, 3, 128, 128])
+                # save_image(self.denorm(x_real.data.cpu()), result_path2, nrow=1, padding=0)
+                # x_real is just all of the original ones, maybe find a way to break that up?
                 print('Saved real and fake images into {}...'.format(result_path))
 
     def test_multi(self):

@@ -10,3 +10,4 @@
 *.log
 *.jpg
 *.ckpt
+*.pyc
