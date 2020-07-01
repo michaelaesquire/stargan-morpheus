@@ -1,0 +1,12 @@
+# .gitignore
+.DS_Store
+*.m~
+*.fig
+*.png
+*.csv
+*.xlsx
+*.xls
+*.zip
+*.log
+*.jpg
+*.ckpt

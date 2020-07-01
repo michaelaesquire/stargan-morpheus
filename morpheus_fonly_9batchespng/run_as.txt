@@ -1,0 +1,16 @@
+!python main.py --mode train --dataset RaFD --rafd_crop_size 128 --image_size 128 \
+               --c_dim 9 --rafd_image_dir data/morpheus_fonly_9batchespng/train \
+               --sample_dir morpheus_fonly_9batchespng/samples --log_dir morpheus_fonly_9batchespng/logs \
+               --model_save_dir morpheus_fonly_9batchespng/models --result_dir morpheus_fonly_9batchespng/results
+
+
+Goal was to run training with png throughout the whole process, see if it has a different result on the outcome 
+
+
+To Test:
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 9 \
+                 --rafd_crop_size 128 --model_save_dir='morpheus_fonly_8_9batch/models' \
+                 --result_dir='morpheus_fonly_8_9batch/resultspng' \
+                 --rafd_image_dir data/morpheus_fonly_8_9batch/train
