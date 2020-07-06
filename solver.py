@@ -8,6 +8,8 @@ import numpy as np
 import os
 import time
 import datetime
+from PIL import Image
+
 
 
 class Solver(object):
@@ -593,7 +595,7 @@ class Solver(object):
                         #  print(end_dim)
                         current_img_batch = x_concat[q,:,:,start_dim:end_dim] # gets current image w/ left to right-ness
                         #print(current_img_batch.size())
-                        result_path_unique = os.path.join(subdirname, 'batch{}-img{}-realimages.png'.format(c_org[q]+1,(q+1)+(i*num_imgs)))
+                        result_path_unique = os.path.join(subdirname, 'batch{}-to-batch{}-img{}.png'.format(c_org[q]+1,w,(q+1)+(i*num_imgs)))
                         save_image(self.denorm(current_img_batch.data.cpu()),result_path_unique,nrow=1,padding=0)
                                 
                 
