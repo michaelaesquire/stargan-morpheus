@@ -585,18 +585,20 @@ class Solver(object):
 #
                 # secondary loop for all of the created images
                     for w in range(0,int(num_batches)):
-                        # will just have the "real" ones be batch zero
-                        subdirname =self.result_dir + '/batch' + str(w)+'/'
-                        if not os.path.exists(subdirname):
-                            os.mkdir(subdirname)
-                
-                        start_dim = (w)*img_size
-                        end_dim = (w+1)*img_size
-                        #  print(end_dim)
-                        current_img_batch = x_concat[q,:,:,start_dim:end_dim] # gets current image w/ left to right-ness
-                        #print(current_img_batch.size())
-                        result_path_unique = os.path.join(subdirname, 'batch{}-to-batch{}-img{}.png'.format(c_org[q]+1,w,(q+1)+(i*num_imgs)))
-                        save_image(self.denorm(current_img_batch.data.cpu()),result_path_unique,nrow=1,padding=0)
+                        # skip "real", it's a waste of making images
+                        if w > 0:
+                            # will just have the "real" ones be batch zero
+                            subdirname =self.result_dir + '/batch' + str(w)+'/'
+                            if not os.path.exists(subdirname):
+                                os.mkdir(subdirname)
+                    
+                            start_dim = (w)*img_size
+                            end_dim = (w+1)*img_size
+                            #  print(end_dim)
+                            current_img_batch = x_concat[q,:,:,start_dim:end_dim] # gets current image w/ left to right-ness
+                            #print(current_img_batch.size())
+                            result_path_unique = os.path.join(subdirname, 'batch{}-to-batch{}-img{}.png'.format(c_org[q]+1,w,(q+1)+(i*num_imgs)))
+                            save_image(self.denorm(current_img_batch.data.cpu()),result_path_unique,nrow=1,padding=0)
                                 
                 
                 

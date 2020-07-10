@@ -23,7 +23,7 @@ function fixImageChannels(directory) {
 			openPath = "open=" + input + filename;
 			run("Bio-Formats Windowless Importer", openPath);
 			run("Split Channels");
-		//	run("Merge Channels...", "c1=["+filename+" (green)] c2=["+filename+" (blue)] c4=["+filename+" (red)] create");
+		
 			run("Merge Channels...", "c1=[C3-"+filename+"] c2=[C2-"+filename+"] c4=[C1-"+filename+"] create");
 			// reorder in order: brightfield, FM, syto
 			run("Arrange Channels...", "new=321");	

@@ -1,0 +1,60 @@
+!python main.py --mode train --dataset RaFD --rafd_crop_size 128 --image_size 128 \
+               --c_dim 2 --rafd_image_dir data/mm04182019_and_ts0822019/train \
+               --sample_dir mm04182019_and_ts0822019_true/samples --log_dir mm04182019_and_ts0822019_true/logs \
+               --model_save_dir mm04182019_and_ts0822019_true/models --result_dir mm04182019_and_ts0822019_true/results
+
+
+
+To Test:
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='mm04182010_and_ts08292019/models' \
+                 --result_dir='mm04182010_and_ts08292019/results' \
+                 --rafd_image_dir data/mm04182019_and_ts0822019/train
+
+# running on the test data
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='mm04182010_and_ts08292019/models' \
+                 --result_dir='mm04182010_and_ts08292019/results_Pre' \
+                 --rafd_image_dir data/mm04182019_and_ts0822019/test
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='mm04182010_and_ts08292019/models' \
+                 --result_dir='mm04182010_and_ts08292019/Pre_mm04182019' \
+                 --rafd_image_dir data/mm04182019_and_ts0822019/Pre_mm04182019
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='mm04182010_and_ts08292019/models' \
+                 --result_dir='mm04182010_and_ts08292019/Pre_mm04182019' \
+                 --rafd_image_dir data/mm04182019_and_ts0822019/Pre_mm04182019
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='mm04182010_and_ts08292019/models' \
+                 --result_dir='mm04182010_and_ts08292019/Pre_ts08292019' \
+                 --rafd_image_dir data/mm04182019_and_ts0822019/Pre_ts08292019
+
+
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='mm04182010_and_ts08292019/models' \
+                 --result_dir='mm04182010_and_ts08292019/untreated_mm04182019' \
+                 --rafd_image_dir data/mm04182019_and_ts0822019/untreated_mm04182019
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='mm04182010_and_ts08292019/models' \
+                 --result_dir='mm04182010_and_ts08292019/untreated_mm04182019' \
+                 --rafd_image_dir data/mm04182019_and_ts0822019/untreated_mm04182019
+
+
+
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='mm04182010_and_ts08292019/models' \
+                 --result_dir='mm04182010_and_ts08292019/untreated_ts08292019' \
+                 --rafd_image_dir data/mm04182019_and_ts0822019/untreated_ts08292019
+
+

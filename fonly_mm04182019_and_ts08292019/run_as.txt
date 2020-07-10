@@ -1,0 +1,66 @@
+!python main.py --mode train --dataset RaFD --rafd_crop_size 128 --image_size 128 \
+               --c_dim 2 --rafd_image_dir data/fonly_mm04182019_and_ts08292019/train \
+               --sample_dir fonly_mm04182019_and_ts08292019/samples --log_dir fonly_mm04182019_and_ts08292019/logs \
+               --model_save_dir fonly_mm04182019_and_ts08292019/models --result_dir fonly_mm04182019_and_ts08292019/results
+
+
+To Test:
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_mm04182019_and_ts08292019/models' \
+                 --result_dir='fonly_mm04182019_and_ts08292019/results' \
+                 --rafd_image_dir data/fonly_mm04192019_and_ts08292019/train
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_mm04182019_and_ts08292019/models' \
+                 --result_dir='fonly_mm04182019_and_ts08292019/results_Pre' \
+                 --rafd_image_dir data/fonly_mm04192019_and_ts08292019/test
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_mm04182019_and_ts08292019/models' \
+                 --result_dir='fonly_mm04182019_and_ts08292019/results_Pre8' \
+                 --rafd_image_dir data/fonly_mm04192019_and_ts08292019/test8
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_mm04182019_and_ts08292019/models' \
+                 --result_dir='fonly_mm04182019_and_ts08292019/results_Pre8_ts08292019' \
+                 --rafd_image_dir data/fonly_mm04192019_and_ts08292019/test8_2
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_mm04182019_and_ts08292019/models' \
+                 --result_dir='fonly_mm04182019_and_ts08292019/results_Unt_ts08292019' \
+                 --rafd_image_dir data/fonly_mm04192019_and_ts08292019/train8_ts08292019
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_mm04182019_and_ts08292019/models' \
+                 --result_dir='fonly_mm04182019_and_ts08292019/results_Unt_mm04182019' \
+                 --rafd_image_dir data/fonly_mm04192019_and_ts08292019/train8_mm04182019
+
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_mm04182019_and_ts08292019/models' \
+                 --result_dir='fonly_mm04182019_and_ts08292019/allfonly_Pre_mm04182019' \
+                 --rafd_image_dir data/fonly_mm04192019_and_ts08292019/Pre_mm04182019
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_mm04182019_and_ts08292019/models' \
+                 --result_dir='fonly_mm04182019_and_ts08292019/allfonly_Pre_ts08292019' \
+                 --rafd_image_dir data/fonly_mm04192019_and_ts08292019/Pre_ts08292019
+
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_mm04182019_and_ts08292019/models' \
+                 --result_dir='fonly_mm04182019_and_ts08292019/untreated_mm04182019' \
+                 --rafd_image_dir data/fonly_mm04182019_and_ts08292019/untreated_mm04182019
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_mm04182019_and_ts08292019/models' \
+                 --result_dir='fonly_mm04182019_and_ts08292019/untreated_ts08292019' \
+                 --rafd_image_dir data/fonly_mm04182019_and_ts08292019/untreated_ts08292019
+
+
