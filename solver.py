@@ -589,6 +589,10 @@ class Solver(object):
                         if w > 0:
                             # will just have the "real" ones be batch zero
                             subdirname =self.result_dir + '/batch' + str(w)+'/'
+                            # get the last folder name -- I'll design this to be the name of the image so we can
+                            # get the image name back in
+                            og_image_name = os.path.basename(self.result_dir)
+                            # if the subdirectory for each batch does not exist, create
                             if not os.path.exists(subdirname):
                                 os.mkdir(subdirname)
                     
@@ -597,7 +601,9 @@ class Solver(object):
                             #  print(end_dim)
                             current_img_batch = x_concat[q,:,:,start_dim:end_dim] # gets current image w/ left to right-ness
                             #print(current_img_batch.size())
-                            result_path_unique = os.path.join(subdirname, 'batch{}-to-batch{}-img{}.png'.format(c_org[q]+1,w,(q+1)+(i*num_imgs)))
+                            # maybe reconsider this batch to batch notation in order to make it easier? this would mean we'd have to do
+                            # one image at a time, which is what makes the most sense, but is kinda tedious.....
+                            result_path_unique = os.path.join(subdirname, og_image_name+ '_batch{}_to_batch{}_b{}.png'.format(c_org[q]+1,w,(q+1)+(i*num_imgs)))
                             save_image(self.denorm(current_img_batch.data.cpu()),result_path_unique,nrow=1,padding=0)
                                 
                 

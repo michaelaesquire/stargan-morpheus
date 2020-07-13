@@ -58,3 +58,8 @@ python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
                  --rafd_image_dir data/mm04182019_and_ts0822019/untreated_ts08292019
 
 
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 2 \
+                 --rafd_crop_size 128 --model_save_dir='mm04182010_and_ts08292019/models' \
+                 --result_dir='mm04182010_and_ts08292019/mm_04182019_timecourse_set2_rep3_a_01__6_R3D_BaSiC' \
+                 --rafd_image_dir data/mm04182019_and_ts0822019/mm_04182019_timecourse_set2_rep3_a_01__6_R3D_BaSiC
+
