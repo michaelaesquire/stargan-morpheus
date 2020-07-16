@@ -286,12 +286,18 @@ class Solver(object):
                 x_reconst = self.G(x_fake, c_org)
                 g_loss_rec = torch.mean(torch.abs(x_real - x_reconst))
 
+                # ===
                 # Backward and optimize.
-                g_loss = g_loss_fake + self.lambda_rec * g_loss_rec + self.lambda_cls * g_loss_cls
+                
+                modification = torch.mean(x_fake - x_real, dim=(1,2), keepdim=True)
+                g_loss_lvl = torch.mean(torch.square(x_fake - modification))
+                lambda_lvl = 1000.0 # you can try smaller or larger value here
+                
+                g_loss = g_loss_fake + self.lambda_rec * g_loss_rec + self.lambda_cls * g_loss_cls + lambda_lvl * g_loss_lvl
                 self.reset_grad()
                 g_loss.backward()
                 self.g_optimizer.step()
-
+                
                 # Logging.
                 loss['G/loss_fake'] = g_loss_fake.item()
                 loss['G/loss_rec'] = g_loss_rec.item()
@@ -603,7 +609,7 @@ class Solver(object):
                             #print(current_img_batch.size())
                             # maybe reconsider this batch to batch notation in order to make it easier? this would mean we'd have to do
                             # one image at a time, which is what makes the most sense, but is kinda tedious.....
-                            result_path_unique = os.path.join(subdirname, og_image_name+ '_batch{}_to_batch{}_b{}.png'.format(c_org[q]+1,w,(q+1)+(i*num_imgs)))
+                            result_path_unique = os.path.join(subdirname, og_image_name+ '_B{}tB{}_b{}.png'.format(c_org[q]+1,w,(q+1)+(i*num_imgs)))
                             save_image(self.denorm(current_img_batch.data.cpu()),result_path_unique,nrow=1,padding=0)
                                 
                 
