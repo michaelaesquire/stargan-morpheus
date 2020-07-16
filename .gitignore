@@ -12,3 +12,8 @@
 *.ckpt
 *.pyc
 *.tif
+*.res
+*.xml
+*.results
+*.properties
+*events.out*

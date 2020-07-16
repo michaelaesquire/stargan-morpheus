@@ -10,7 +10,7 @@ function fixImageChannels(directory) {
 	for (i = 0; i < fileList.length; i++) { 
 		fullPath = directory + fileList[i];
 		if (File.isDirectory(fullPath)) {
-			//selectDir(fullPath);
+		//	fixImageChannels(fullPath);
 		} else if (endsWith(fileList[i],".png")) { 
 			// if file ends in .dv, split save
 			input = directory;
