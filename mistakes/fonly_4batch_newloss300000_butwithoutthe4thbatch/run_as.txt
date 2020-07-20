@@ -1,0 +1,30 @@
+!python main.py --mode train --dataset RaFD --rafd_crop_size 128 --image_size 128 \
+               --c_dim 2 --rafd_image_dir data/fonly_mm04182019_and_ts08292019/train \
+               --sample_dir fonly_mm04182019_and_ts08292019/samples --log_dir fonly_mm04182019_and_ts08292019/logs \
+               --model_save_dir fonly_mm04182019_and_ts08292019/models --result_dir fonly_mm04182019_and_ts08292019/results
+
+
+To Test:
+
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 4 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_4batch_newloss300000/models' \
+                 --result_dir='fonly_4batch_newloss300000/f_only_mm_04182019_timecourse_set2_rep3_a_01__3' \
+                 --rafd_image_dir data/fonly_mm04182019_and_ts08292019/f_only_mm_04182019_timecourse_set2_rep3_a_01__3  --test_iters 290000
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 4 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_4batch_newloss300000/models' \
+                 --result_dir='fonly_4batch_newloss300000/f_only_ts_08292019_x3_set1_rep3_a_01__3' \
+                 --rafd_image_dir data/fonly_mm04182019_and_ts08292019/f_only_ts_08292019_x3_set1_rep3_a_01__3 --test_iters 290000
+
+
+python main.py --mode test --dataset RaFD --image_size 128 --c_dim 4 \
+                 --rafd_crop_size 128 --model_save_dir='fonly_4batch_newloss300000/models' \
+                 --result_dir='fonly_4batch_newloss300000/f_only_mm_07302019_x025_set2_rep1_a_01__3' \
+                 --rafd_image_dir data/fonly_mm04182019_and_ts08292019/f_only_mm_07302019_x025_set2_rep1_a_01__3 --test_iters 290000
+
+
+
+
