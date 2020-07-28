@@ -289,7 +289,10 @@ class Solver(object):
                 # ===
                 # Backward and optimize.
                 
-                modification = torch.mean(x_fake - x_real, dim=(1,2), keepdim=True)
+                modification = torch.mean(x_fake - x_real, dim=(2,3), keepdim=True)
+                # reminder from debugging
+                #print(x_fake.size())
+                #print(x_real.size())
                 g_loss_lvl = torch.mean(torch.square(x_fake - modification))
                 lambda_lvl = 1000.0 # you can try smaller or larger value here
                 
@@ -564,8 +567,9 @@ class Solver(object):
                 x_concat = torch.cat(x_fake_list, dim=3)
                 # print(x_fake_list)
                 #print("aegawegawegawegawegnawehgioaeor")
+                og_image_name = os.path.basename(self.result_dir)
                 #print(x_concat)
-                result_path = os.path.join(self.result_dir, '{}-images.png'.format(i+1))
+                result_path = os.path.join(self.result_dir, og_image_name+'-{}-images.png'.format(i+1))
                 result_path2 = os.path.join(self.result_dir,'{}-imageseeee.png'.format(i+1))
                 save_image(self.denorm(x_concat.data.cpu()), result_path, nrow=1, padding=0)
                 #print(x_real[1,:,:,:])
@@ -591,6 +595,7 @@ class Solver(object):
 #
                 # secondary loop for all of the created images
                     for w in range(0,int(num_batches)):
+                        # print(q)
                         # skip "real", it's a waste of making images
                         if w > 0:
                             # will just have the "real" ones be batch zero
@@ -609,7 +614,8 @@ class Solver(object):
                             #print(current_img_batch.size())
                             # maybe reconsider this batch to batch notation in order to make it easier? this would mean we'd have to do
                             # one image at a time, which is what makes the most sense, but is kinda tedious.....
-                            result_path_unique = os.path.join(subdirname, og_image_name+ '_B{}tB{}_b{}.png'.format(c_org[q]+1,w,(q+1)+(i*num_imgs)))
+                            result_path_unique = os.path.join(subdirname, og_image_name+ '_B{}tB{}_b{}.png'.format(c_org[q]+1,w,(q+1)+(i*8)))
+                                #print(result_path_unique)
                             save_image(self.denorm(current_img_batch.data.cpu()),result_path_unique,nrow=1,padding=0)
                                 
                 
