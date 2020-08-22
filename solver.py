@@ -294,7 +294,7 @@ class Solver(object):
                 #print(x_fake.size())
                 #print(x_real.size())
                 g_loss_lvl = torch.mean(torch.square(x_fake - modification))
-                lambda_lvl = 1000.0 # you can try smaller or larger value here
+                lambda_lvl = 10000.0 # you can try smaller or larger value here
                 
                 g_loss = g_loss_fake + self.lambda_rec * g_loss_rec + self.lambda_cls * g_loss_cls + lambda_lvl * g_loss_lvl
                 self.reset_grad()
@@ -597,7 +597,7 @@ class Solver(object):
                     for w in range(0,int(num_batches)):
                         # print(q)
                         # skip "real", it's a waste of making images
-                        if w > 0:
+                        if w > -1:
                             # will just have the "real" ones be batch zero
                             subdirname =self.result_dir + '/batch' + str(w)+'/'
                             # get the last folder name -- I'll design this to be the name of the image so we can
