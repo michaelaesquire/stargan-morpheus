@@ -33,6 +33,7 @@ class Solver(object):
         self.lambda_cls = config.lambda_cls
         self.lambda_rec = config.lambda_rec
         self.lambda_gp = config.lambda_gp
+        self.lambda_lvl = config.lambda_lvl
 
         # Training configurations.
         self.dataset = config.dataset
@@ -187,7 +188,8 @@ class Solver(object):
         if self.dataset == 'CelebA':
             data_loader = self.celeba_loader
         elif self.dataset == 'RaFD':
-            data_loader = self.rafd_loader
+            data_loader, _ = self.rafd_loader
+        
 
         # Fetch fixed inputs for debugging.
         data_iter = iter(data_loader)
@@ -294,7 +296,7 @@ class Solver(object):
                 #print(x_fake.size())
                 #print(x_real.size())
                 g_loss_lvl = torch.mean(torch.square(x_fake - modification))
-                lambda_lvl = 1000.0 # you can try smaller or larger value here
+                lambda_lvl = self.lambda_lvl # you can try smaller or larger value here
                 
                 g_loss = g_loss_fake + self.lambda_rec * g_loss_rec + self.lambda_cls * g_loss_cls + lambda_lvl * g_loss_lvl
                 self.reset_grad()
@@ -540,10 +542,12 @@ class Solver(object):
         if self.dataset == 'CelebA':
             data_loader = self.celeba_loader
         elif self.dataset == 'RaFD':
-            data_loader = self.rafd_loader
+            data_loader, imgnames = self.rafd_loader
         
         with torch.no_grad():
             for i, (x_real, c_org) in enumerate(data_loader):
+                
+                #     print(imgnames)
 
                 # Prepare input images and target domain labels.
                 x_real = x_real.to(self.device)
@@ -578,7 +582,7 @@ class Solver(object):
                 # x_concat.size() = torch.Size([16, 3, 128, 1280])
                 # shoot, will maybe need to break this up?
                 # list of images (vertically)
-                num_imgs = list(x_real.size())[0] # will always be 16 I think
+                num_imgs = list(x_real.size())[0] # will always be 8 with the current settings (09-21-2020) UNLESS you're at the end of the batch, where it can be < 8
                 img_size =list(x_real.size())[2] # will always be 128 as long as I keep my settings
                 full_im_width = list(x_concat.size())[3] # width of the combined images
                 num_batches = full_im_width/img_size # number of batches (includes real)
@@ -594,9 +598,11 @@ class Solver(object):
 #                    save_image(self.denorm(current_im.data.cpu()), result_path_im, nrow=1, padding=0)
 #
                 # secondary loop for all of the created images
+                # w is loop over batch numbers (ex, 0 to 3)
                     for w in range(0,int(num_batches)):
                         # print(q)
                         # skip "real", it's a waste of making images
+                        # just kidding we want to make the images but I'll leave this if here just in case I change my mind
                         if w > -1:
                             # will just have the "real" ones be batch zero
                             subdirname =self.result_dir + '/batch' + str(w)+'/'
@@ -614,9 +620,15 @@ class Solver(object):
                             #print(current_img_batch.size())
                             # maybe reconsider this batch to batch notation in order to make it easier? this would mean we'd have to do
                             # one image at a time, which is what makes the most sense, but is kinda tedious.....
-                            result_path_unique = os.path.join(subdirname, og_image_name+ '_B{}tB{}_b{}.png'.format(c_org[q]+1,w,(q+1)+(i*8)))
+                            # (q)+(i*8) is what's counting up, could use this to get the original image name
+                            original_image_path = imgnames[(q)+(i*8)]
+                            # break down to get original name without full file path
+                            original_image_name = os.path.split(original_image_path[0])[-1]
+                            # this one is based off of the original images
+                            new_result_path = os.path.join(subdirname, 'B{}_'.format(w)+ original_image_name)
+                            #result_path_unique = os.path.join(subdirname, og_image_name+ '_B{}tB{}_b{}.png'.format(c_org[q]+1,w,(q+1)+(i*8)))
                                 #print(result_path_unique)
-                            save_image(self.denorm(current_img_batch.data.cpu()),result_path_unique,nrow=1,padding=0)
+                            save_image(self.denorm(current_img_batch.data.cpu()),new_result_path,nrow=1,padding=0)
                                 
                 
                 

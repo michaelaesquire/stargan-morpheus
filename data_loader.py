@@ -89,4 +89,5 @@ def get_loader(image_dir, attr_path, selected_attrs, crop_size=178, image_size=1
                                   batch_size=batch_size,
                                   shuffle=(mode=='train'),
                                   num_workers=num_workers)
-    return data_loader
+# add returning the image names for output later
+    return data_loader,dataset.imgs
