@@ -2,6 +2,7 @@ from model import Generator
 from model import Discriminator
 from torch.autograd import Variable
 from torchvision.utils import save_image
+from torchvision.utils import make_grid
 import torch
 import torch.nn.functional as F
 import numpy as np
@@ -9,7 +10,7 @@ import os
 import time
 import datetime
 from PIL import Image
-
+import cv2
 
 
 class Solver(object):
@@ -547,10 +548,12 @@ class Solver(object):
         with torch.no_grad():
             for i, (x_real, c_org) in enumerate(data_loader):
                 
-                #     print(imgnames)
-
                 # Prepare input images and target domain labels.
+                #print("X REAL START")
+                #print(x_real)
                 x_real = x_real.to(self.device)
+                
+                #             print("X REAL END")
                 c_trg_list = self.create_labels(c_org, self.c_dim, self.dataset, self.selected_attrs)
                 #print(i)
                 #  print("that was i")
@@ -569,8 +572,16 @@ class Solver(object):
 
                 # Save the translated images.
                 x_concat = torch.cat(x_fake_list, dim=3)
-                # print(x_fake_list)
-                #print("aegawegawegawegawegnawehgioaeor")
+#               print("x_concat")
+#               print(x_concat)
+#               print(x_concat.shape)
+#               print("x_fake_list")
+#                print(x_fake_list[0])
+#    print(torch.min(x_fake_list[0]))
+# with one image, torch.Size([1, 3, 128, 512]) for x_concat
+# print(torch.max(x_fake_list[0])) tensor(-0.7412)
+# print(torch.min(x_fake_list[0])) tensor(-1)
+# with one image, torch.Size([1, 3, 128, 128]) for x_fake_list[0]
                 og_image_name = os.path.basename(self.result_dir)
                 #print(x_concat)
                 result_path = os.path.join(self.result_dir, og_image_name+'-{}-images.png'.format(i+1))
@@ -621,14 +632,28 @@ class Solver(object):
                             # maybe reconsider this batch to batch notation in order to make it easier? this would mean we'd have to do
                             # one image at a time, which is what makes the most sense, but is kinda tedious.....
                             # (q)+(i*8) is what's counting up, could use this to get the original image name
-                            original_image_path = imgnames[(q)+(i*8)]
+                            original_image_path = imgnames[(q)+(i*self.batch_size)]
                             # break down to get original name without full file path
                             original_image_name = os.path.split(original_image_path[0])[-1]
                             # this one is based off of the original images
                             new_result_path = os.path.join(subdirname, 'B{}_'.format(w)+ original_image_name)
                             #result_path_unique = os.path.join(subdirname, og_image_name+ '_B{}tB{}_b{}.png'.format(c_org[q]+1,w,(q+1)+(i*8)))
                                 #print(result_path_unique)
-                            save_image(self.denorm(current_img_batch.data.cpu()),new_result_path,nrow=1,padding=0)
+                            grid = make_grid(self.denorm(current_img_batch.data.cpu()))
+                            ndarr = grid.mul(65535).add_(0.5).clamp_(0, 65535).permute(1, 2, 0).to('cpu', torch.int16).numpy()
+                            ndarr8 = grid.mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to('cpu', torch.uint8).numpy()
+                            #print("grid")
+                            #print(grid)
+                            #print(self.denorm(current_img_batch.data.cpu()).shape)
+                            #print("NDARR")
+                            #print(ndarr)
+                            #print(ndarr.shape) # (128, 128, 3)
+                            #print("NDARR8")
+                            #print(ndarr8)
+                            #print("Image NDARR8")
+                            #         print(Image.fromarray(ndarr8))
+                            cv2.imwrite(new_result_path, ndarr.astype(np.uint16) )
+                                #save_image(self.denorm(current_img_batch.data.cpu()),new_result_path,nrow=1,padding=0)
                                 
                 
                 

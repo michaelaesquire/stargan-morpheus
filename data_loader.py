@@ -1,10 +1,29 @@
 from torch.utils import data
 from torchvision import transforms as T
-from torchvision.datasets import ImageFolder
+from torchvision.datasets import ImageFolder, DatasetFolder
 from PIL import Image
 import torch
 import os
 import random
+import numpy as np
+import cv2
+import numpy as np
+
+# add a new loader based on this
+#def pil_loader(path: str) -> Image.Image:
+#    # open path as file to avoid ResourceWarning (https://github.com/python-pillow/Pillow/issues/835)
+#    with open(path, 'rb') as f:
+#        img = Image.open(f)
+#        return img.convert('RGB')
+
+def pil_loader2(path: str) -> Image.Image:
+    # open path as file to avoid ResourceWarning (https://github.com/python-pillow/Pillow/issues/835)
+    with open(path, 'rb') as f:
+        img = Image.open(f)
+        # np_im = np.array(img)
+        img2 = cv2.imread(path,-1) # -1 gets it read in correctly
+        #return img.convert('RGB')
+        return img2.astype('float16')
 
 
 class CelebA(data.Dataset):
@@ -74,16 +93,18 @@ def get_loader(image_dir, attr_path, selected_attrs, crop_size=178, image_size=1
     transform = []
     if mode == 'train':
         transform.append(T.RandomHorizontalFlip())
-    transform.append(T.CenterCrop(crop_size))
-    transform.append(T.Resize(image_size))
+    #   transform.append(T.CenterCrop(crop_size))
+    #transform.append(T.Resize(image_size))
     transform.append(T.ToTensor())
+    #transform.append(T.Lambda(lambda image: torch.from_numpy(np.array(image).astype(np.float32)).unsqueeze(0)))
+    transform.append(T.Lambda(lambda image: torch.from_numpy(np.array(image)/65535)))
     transform.append(T.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)))
     transform = T.Compose(transform)
 
     if dataset == 'CelebA':
         dataset = CelebA(image_dir, attr_path, selected_attrs, transform, mode)
     elif dataset == 'RaFD':
-        dataset = ImageFolder(image_dir, transform)
+        dataset = ImageFolder(image_dir, transform,loader=pil_loader2)
 
     data_loader = data.DataLoader(dataset=dataset,
                                   batch_size=batch_size,
